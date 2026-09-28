@@ -1,0 +1,21 @@
+[
+  {
+    "order_id": "ORD101",
+    "sku": "SKU101",
+    "required_quantity": 5,
+    "status": "READY"
+  },
+  {
+    "order_id": "ORD102",
+    "sku": "SKU204",
+    "required_quantity": 12,
+    "status": "HOLD",
+    "hold_reason": "Insufficient inventory"
+  },
+  {
+    "order_id": "ORD103",
+    "sku": "SKU305",
+    "required_quantity": 4,
+    "status": "PICKING"
+  }
+]

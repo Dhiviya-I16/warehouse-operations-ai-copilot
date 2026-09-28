@@ -1,0 +1,58 @@
+WAREHOUSE OPERATIONS STANDARD OPERATING PROCEDURE
+Version: 1.0
+Purpose: Training and demonstration data for the Warehouse Operations AI Copilot.
+
+1. ORDER HOLD DUE TO INSUFFICIENT INVENTORY
+
+When an order is placed on hold because sufficient inventory is not available:
+
+1. Verify the required quantity for the order.
+2. Check the available inventory for the affected SKU.
+3. Do not release the order when available inventory is lower than the required quantity.
+4. Keep the order in HOLD status until sufficient inventory becomes available or an authorized supervisor provides further instruction.
+5. Escalate the shortage to the Inventory Control Team if sufficient inventory is not expected to become available within the current fulfillment cycle.
+6. Record the shortage reason according to the warehouse exception-handling process.
+
+Only authorized warehouse personnel may change or release an order.
+
+
+2. INVENTORY SHORTAGE
+
+When an inventory shortage is identified:
+
+1. Verify the SKU and available quantity.
+2. Confirm that there are no inventory discrepancies caused by pending putaway or unconfirmed stock movements.
+3. If the shortage remains after verification, notify the Inventory Control Team.
+4. Orders requiring more inventory than the available quantity must remain on hold.
+5. Do not manually adjust inventory quantities without authorization.
+
+
+3. ORDER RELEASE
+
+An order may be released only when the required inventory is available and all applicable warehouse checks have been completed.
+
+The AI Operations Copilot must not release orders, modify order status, change order quantities, or perform warehouse transactions.
+
+If a user requests the AI Copilot to perform one of these actions, the request must be refused and the user must be directed to an authorized warehouse operator.
+
+
+4. ESCALATION
+
+A warehouse issue should be escalated when:
+
+- Required operational information cannot be verified.
+- An inventory shortage cannot be resolved within the current fulfillment cycle.
+- The requested action requires authorization.
+- The available SOP does not provide sufficient guidance.
+- There is uncertainty about the safe next step.
+
+The AI Copilot should clearly explain why escalation is required and direct the user to an appropriate human warehouse operator or supervisor.
+
+
+5. INFORMATION NOT AVAILABLE
+
+The AI Copilot must not create or assume operational information that is not present in the available warehouse data or SOP.
+
+If sufficient information cannot be retrieved, the Copilot should state that the information is unavailable and recommend verification or human escalation.
+
+The Copilot must not invent order status, inventory quantities, SKU information, policies, or warehouse procedures.

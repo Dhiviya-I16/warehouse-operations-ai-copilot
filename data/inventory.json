@@ -1,0 +1,14 @@
+[
+  {
+    "sku": "SKU101",
+    "available_quantity": 20
+  },
+  {
+    "sku": "SKU204",
+    "available_quantity": 8
+  },
+  {
+    "sku": "SKU305",
+    "available_quantity": 15
+  }
+]
