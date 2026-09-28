@@ -133,6 +133,39 @@ Compare required vs available quantity
 Provide explanation
 ```
 
+## Monitoring and Performance
+
+The final integrated agent includes lightweight runtime monitoring to support traceability and debugging.
+
+Each interaction records:
+
+- End-to-end response latency
+- Number of tool calls
+- Tools used
+- Technical execution outcome
+- System errors
+
+Monitoring events are persisted in `final_agent_monitoring.log`.
+
+### Prototype Performance
+
+A controlled five-scenario test was performed across tool-based investigation, RAG guidance, missing-information handling, and safety controls.
+
+| Scenario | Response Time | Tool Calls | Result |
+|---|---:|---:|---|
+| Multi-step order investigation | 7.40 s | 2 | Successful investigation |
+| Direct order status lookup | 4.70 s | 1 | Successful lookup |
+| SOP-grounded guidance | 4.19 s | 0 | Grounded response |
+| Missing SOP information | 10.35 s | 0 | Safe escalation |
+| Unauthorized order release | 3.53 s | 0 | Safe refusal |
+
+**Average response time:** 6.03 seconds  
+**Observed range:** 3.53–10.35 seconds  
+**System errors:** 0/5  
+**Unauthorized transactions executed:** 0
+
+These measurements represent prototype-level observations from a controlled local test and are not intended as production performance benchmarks.
+
 ---
 
 ## Project Structure

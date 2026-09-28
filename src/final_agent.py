@@ -2,6 +2,9 @@ import os
 import json
 from pathlib import Path
 
+import time
+from datetime import datetime
+
 from dotenv import load_dotenv
 from openai import OpenAI
 from langchain_openai import OpenAIEmbeddings
@@ -55,6 +58,11 @@ vector_store = FAISS.from_documents(
     embedding_model
 )
 
+# ---------------------------------------------------------
+# Monitoring Setup
+# ---------------------------------------------------------
+
+MONITORING_LOG = "final_agent_monitoring.log"
 
 # --------------------------------------------------
 # 3. TOOL DEFINITIONS
@@ -273,7 +281,31 @@ RETRIEVED WAREHOUSE SOP CONTEXT:
         tool_history,
         sop_context
     )
+# --------------------------------------------------
+# 8. LOGGING AND MONITORING
+# --------------------------------------------------
 
+def log_monitoring_event(
+    user_query,
+    response_time,
+    tool_calls,
+    tools_used,
+    outcome
+):
+    """Record basic monitoring information for each agent interaction."""
+
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    with open(MONITORING_LOG, "a", encoding="utf-8") as log_file:
+        log_file.write("=" * 70 + "\n")
+        log_file.write(f"Timestamp: {timestamp}\n")
+        log_file.write(f"Query: {user_query}\n")
+        log_file.write(f"Response Time: {response_time:.2f} seconds\n")
+        log_file.write(f"Tool Calls: {tool_calls}\n")
+        log_file.write(
+            f"Tools Used: {', '.join(tools_used) if tools_used else 'None'}\n"
+        )
+        log_file.write(f"Outcome: {outcome}\n")
 
 # --------------------------------------------------
 # 8. MAIN APPLICATION
@@ -304,10 +336,33 @@ def main():
 
         try:
 
+            # Start performance timer
+            start_time = time.perf_counter()
+
             response, tool_history, sop_context = process_query(
                 user_query,
                 conversation_history
             )
+
+            # Stop performance timer
+            end_time = time.perf_counter()
+            response_time = end_time - start_time
+
+            # Collect tool usage metrics
+            tool_calls = len(tool_history)
+
+            tools_used = [
+                item["tool"] for item in tool_history
+            ]
+
+            # Determine basic interaction outcome
+            if any(
+                item["result"].get("success") is False
+                for item in tool_history
+            ):
+                outcome = "COMPLETED_WITH_TOOL_ERROR"
+            else:
+                outcome = "SUCCESS"
 
             print("\n--- Retrieved SOP Context ---")
             print(sop_context)
@@ -327,11 +382,42 @@ def main():
             print("\n--- Agent Response ---")
             print(response)
 
+            # Save monitoring information to log file
+            log_monitoring_event(
+                user_query=user_query,
+                response_time=response_time,
+                tool_calls=tool_calls,
+                tools_used=tools_used,
+                outcome=outcome
+            )
+
+            # Display performance information in terminal
+            print("\n--- Performance Monitoring ---")
+            print(f"Response Time: {response_time:.2f} seconds")
+            print(f"Tool Calls: {tool_calls}")
+            print(
+                f"Tools Used: {', '.join(tools_used) if tools_used else 'None'}"
+            )
+            print(f"Outcome: {outcome}")
+
             print("\n" + "-" * 68)
 
         except Exception as error:
+
+            # Calculate elapsed time even when the request fails
+            end_time = time.perf_counter()
+            response_time = end_time - start_time
+
             print(f"\nError: {error}\n")
 
+            # Record system error in monitoring log
+            log_monitoring_event(
+                user_query=user_query,
+                response_time=response_time,
+                tool_calls=0,
+                tools_used=[],
+                outcome="SYSTEM_ERROR"
+            )
 
 if __name__ == "__main__":
     main()
