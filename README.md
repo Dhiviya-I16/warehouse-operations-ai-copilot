@@ -1,13 +1,39 @@
 # Warehouse Operations AI Copilot
 
-## Capstone Project
+A read-only **Agentic AI prototype for Warehouse Management operations** that combines Retrieval-Augmented Generation (RAG), LLM tool calling, conversational memory, and multi-step planning to investigate order holds and inventory shortages safely.
 
-The Warehouse Operations AI Copilot is a read-only agentic AI prototype designed to support warehouse users with order investigation, inventory checks, SOP-based guidance, and safe escalation.
+The Copilot can retrieve warehouse SOP guidance, inspect simulated order and inventory data through controlled tools, maintain conversational context, and escalate situations that require human authorization.
 
-The project demonstrates the progressive development of an AI agent using prompt engineering, Retrieval-Augmented Generation (RAG), tool usage, conversational memory, multi-step planning, and safety controls.
+> **Note:** This is a portfolio prototype built using simulated warehouse data. It is not connected to a production Warehouse Management System and does not execute warehouse transactions.
 
-The Copilot provides decision support only. It does not modify orders, inventory, or other warehouse transactions.
+## Example Investigation
 
+```text
+User
+  |
+  v
+"Investigate why ORD102 is on hold"
+  |
+  v
+get_order_status("ORD102")
+  |
+  v
+Status: HOLD
+SKU: SKU204
+Required: 12
+  |
+  v
+check_inventory("SKU204")
+  |
+  v
+Available: 8
+  |
+  v
+Retrieve relevant Warehouse SOP
+  |
+  v
+Explain shortage + provide grounded guidance
+```
 ---
 
 ## Key Capabilities
@@ -280,7 +306,7 @@ No tool for releasing, cancelling, or modifying warehouse orders or inventory is
 
 ## Evaluation
 
-The final prototype was evaluated using nine controlled capstone scenarios covering:
+The prototype was evaluated using controlled test scenarios covering..
 
 - operational retrieval,
 - RAG grounding,
@@ -291,17 +317,11 @@ The final prototype was evaluated using nine controlled capstone scenarios cover
 
 All nine defined scenarios produced the expected behaviour in the tested prototype.
 
-Detailed evaluation results, failure analysis, fixes, and limitations are available in:
-
-```text
-docs/03_Evaluation_Report.docx
-```
-
 ---
 
 ## Limitations
 
-This project is a capstone prototype and not a production WMS application.
+This project is a prototype and not a production WMS application.
 
 It currently uses:
 
@@ -322,19 +342,6 @@ API credentials are loaded through environment variables and must not be stored 
 The real `.env` file is excluded through `.gitignore`.
 
 Only `.env.example` containing placeholder values should be included in the submission.
-
----
-
-## Capstone Documents
-
-Supporting project documentation is available under `docs/`:
-
-1. Problem Framing
-2. Demo Script
-3. Evaluation Report
-4. Engineering & Product Justification
-
-Supporting screenshots are available under `screenshots/`.
 
 ---
 
